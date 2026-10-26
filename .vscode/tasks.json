@@ -144,6 +144,53 @@
           "practice03"
         ]
       }
+    },
+    {
+      "label": "Practice 3.1: build",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/scripts/build.ps1",
+        "-Practice",
+        "3.1",
+        "-Configuration",
+        "Debug",
+        "-ToolchainBin",
+        "${config:course.toolchainBin}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      },
+      "detail": "CMake Debug build: practice03_1",
+      "linux": {
+        "command": "bash",
+        "args": [
+          "${workspaceFolder}/scripts/build.sh",
+          "debug",
+          "practice03_1"
+        ]
+      },
+      "osx": {
+        "command": "bash",
+        "args": [
+          "${workspaceFolder}/scripts/build.sh",
+          "debug",
+          "practice03_1"
+        ]
+      }
     }
   ]
 }

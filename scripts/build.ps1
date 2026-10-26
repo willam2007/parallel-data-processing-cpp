@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-    [ValidateSet('1','2','3','all','tests')][string]$Practice = 'all',
+    [ValidateSet('1','2','3','3.1','all','tests')][string]$Practice = 'all',
     [ValidateSet('Debug','Release')][string]$Configuration = 'Debug',
     [string]$ToolchainBin,
     [switch]$Test
@@ -21,7 +21,7 @@ try {
         if ($LASTEXITCODE -ne 0) { throw 'CMake configure failed. See README.md.' }
         $buildArgs = @('--build', $buildDirectory, '--parallel', '2')
         if ($Practice -eq 'tests') { $buildArgs += @('--target', 'course_checks') }
-        elseif ($Practice -ne 'all') { $buildArgs += @('--target', ('practice0' + $Practice)) }
+        elseif ($Practice -ne 'all') { $buildArgs += @('--target', ('practice0' + $Practice.Replace('.','_'))) }
         & $cmake @buildArgs
         if ($LASTEXITCODE -ne 0) { throw 'Build failed.' }
         if ($Test) {

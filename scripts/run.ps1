@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-    [ValidateSet('1','2','3')][string]$Practice = '3',
+    [ValidateSet('1','2','3','3.1')][string]$Practice = '3',
     [ValidateSet('Debug','Release')][string]$Configuration = 'Debug',
     [UInt64]$Size = 0,
     [ValidateRange(0,3)][int]$Task = 2,
@@ -22,7 +22,8 @@ if ($Size -eq 0) {
 }
 $programArgs = @('--size', [string]$Size)
 if ($Practice -eq '3') { $programArgs += @('--task', [string]$Task, '--repeats', [string]$Repeats) }
-$binary = Join-Path $projectRoot ('build/' + $Configuration.ToLowerInvariant() + '/practice0' + $Practice + '.exe')
+if ($Practice -eq '3.1') { $programArgs = @() }
+$binary = Join-Path $projectRoot ('build/' + $Configuration.ToLowerInvariant() + '/practice0' + $Practice.Replace('.','_') + '.exe')
 if (-not (Test-Path -LiteralPath $binary)) { throw 'Executable missing. Run scripts/build.ps1 first.' }
 $oldPath = $env:PATH
 try {

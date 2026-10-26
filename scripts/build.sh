@@ -5,9 +5,9 @@ target="${2:-all}"
 case "$configuration" in
   debug) cmake_configuration=Debug ;;
   release) cmake_configuration=Release ;;
-  *) echo 'Usage: bash scripts/build.sh debug|release [all|practice01|practice02|practice03|course_checks]' >&2; exit 2 ;;
+  *) echo 'Usage: bash scripts/build.sh debug|release [all|practice01|practice02|practice03|practice03_1|course_checks]' >&2; exit 2 ;;
 esac
-case "$target" in all|practice01|practice02|practice03|course_checks) ;; *) echo 'Invalid build target' >&2; exit 2 ;; esac
+case "$target" in all|practice01|practice02|practice03|practice03_1|course_checks) ;; *) echo 'Invalid build target' >&2; exit 2 ;; esac
 project_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$project_root"
 extra_options=()
