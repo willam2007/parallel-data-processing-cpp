@@ -1,0 +1,203 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Практика 1: суммы (GDB)",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/debug/practice01.exe",
+      "args": [
+        "--size",
+        "1048576"
+      ],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "environment": [
+        {
+          "value": "${config:course.toolchainBin};${env:PATH}",
+          "name": "PATH"
+        }
+      ],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "miDebuggerPath": "${config:course.toolchainBin}/gdb.exe",
+      "setupCommands": [
+        {
+          "description": "Allow GCC standard-library debugger helpers",
+          "text": "-interpreter-exec console \"add-auto-load-safe-path ${config:course.toolchainBin}/libstdc++-6.dll-gdb.py\"",
+          "ignoreFailures": true
+        },
+        {
+          "description": "Enable pretty-printing",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ],
+      "preLaunchTask": "C++20: build",
+      "linux": {
+        "environment": [],
+        "program": "${workspaceFolder}/build/debug/practice01",
+        "miDebuggerPath": "/usr/bin/gdb"
+      }
+    },
+    {
+      "name": "Практика 2: локальность и суммы (GDB)",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/debug/practice02.exe",
+      "args": [
+        "--size",
+        "1048576"
+      ],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "environment": [
+        {
+          "value": "${config:course.toolchainBin};${env:PATH}",
+          "name": "PATH"
+        }
+      ],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "miDebuggerPath": "${config:course.toolchainBin}/gdb.exe",
+      "setupCommands": [
+        {
+          "description": "Allow GCC standard-library debugger helpers",
+          "text": "-interpreter-exec console \"add-auto-load-safe-path ${config:course.toolchainBin}/libstdc++-6.dll-gdb.py\"",
+          "ignoreFailures": true
+        },
+        {
+          "description": "Enable pretty-printing",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ],
+      "preLaunchTask": "Practice 2: build",
+      "linux": {
+        "environment": [],
+        "program": "${workspaceFolder}/build/debug/practice02",
+        "miDebuggerPath": "/usr/bin/gdb"
+      }
+    },
+    {
+      "name": "Практика 3: матрицы (GDB)",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/debug/practice03.exe",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "environment": [
+        {
+          "value": "${config:course.toolchainBin};${env:PATH}",
+          "name": "PATH"
+        }
+      ],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "miDebuggerPath": "${config:course.toolchainBin}/gdb.exe",
+      "setupCommands": [
+        {
+          "description": "Allow GCC standard-library debugger helpers",
+          "text": "-interpreter-exec console \"add-auto-load-safe-path ${config:course.toolchainBin}/libstdc++-6.dll-gdb.py\"",
+          "ignoreFailures": true
+        },
+        {
+          "description": "Enable pretty-printing",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ],
+      "preLaunchTask": "Practice 3: build",
+      "linux": {
+        "environment": [],
+        "program": "${workspaceFolder}/build/debug/practice03",
+        "miDebuggerPath": "/usr/bin/gdb"
+      }
+    },
+    {
+      "name": "Практика 1: суммы (macOS, LLDB)",
+      "type": "lldb",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/debug/practice01",
+      "cwd": "${workspaceFolder}",
+      "args": [
+        "--size",
+        "1048576"
+      ],
+      "preLaunchTask": "C++20: build",
+      "presentation": {
+        "group": "macOS",
+        "order": 1
+      }
+    },
+    {
+      "name": "Практика 2: локальность и суммы (macOS, LLDB)",
+      "type": "lldb",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/debug/practice02",
+      "cwd": "${workspaceFolder}",
+      "args": [
+        "--size",
+        "1048576"
+      ],
+      "preLaunchTask": "Practice 2: build",
+      "presentation": {
+        "group": "macOS",
+        "order": 2
+      }
+    },
+    {
+      "name": "Практика 3: матрицы (macOS, LLDB)",
+      "type": "lldb",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/debug/practice03",
+      "cwd": "${workspaceFolder}",
+      "args": [],
+      "preLaunchTask": "Practice 3: build",
+      "presentation": {
+        "group": "macOS",
+        "order": 3
+      }
+    },
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/debug/practice03.exe",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "environment": [
+        {
+          "value": "${config:course.toolchainBin};${env:PATH}",
+          "name": "PATH"
+        }
+      ],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "miDebuggerPath": "${config:course.toolchainBin}/gdb.exe",
+      "setupCommands": [
+        {
+          "description": "Allow GCC standard-library debugger helpers",
+          "text": "-interpreter-exec console \"add-auto-load-safe-path ${config:course.toolchainBin}/libstdc++-6.dll-gdb.py\"",
+          "ignoreFailures": true
+        },
+        {
+          "description": "Enable pretty-printing",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ],
+      "preLaunchTask": "Practice 3: build",
+      "linux": {
+        "environment": [],
+        "program": "${workspaceFolder}/build/debug/practice03",
+        "miDebuggerPath": "/usr/bin/gdb"
+      },
+      "presentation": {
+        "hidden": true
+      }
+    }
+  ]
+}

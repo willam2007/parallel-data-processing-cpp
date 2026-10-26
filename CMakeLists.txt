@@ -1,0 +1,45 @@
+cmake_minimum_required(VERSION 3.20)
+project(parallel_data_processing LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+if(MSVC)
+    message(FATAL_ERROR "Use MSYS2 UCRT64 GCC on Windows; MSVC is not configured for these OpenMP size_t loops.")
+endif()
+find_package(OpenMP REQUIRED COMPONENTS CXX)
+
+function(course_target name source)
+    add_executable(${name} ${source})
+    target_link_libraries(${name} PRIVATE OpenMP::OpenMP_CXX)
+    target_compile_options(${name} PRIVATE -Wall -Wextra -Wpedantic)
+    # Keep Release comparable to the earlier GCC -O2 experiments, without fast-math.
+    target_compile_options(${name} PRIVATE $<$<CONFIG:Release>:-O2>)
+endfunction()
+
+course_target(practice01 main.cpp)
+course_target(practice02 practice02.cpp)
+course_target(practice03 practice03.cpp)
+
+include(CTest)
+if(BUILD_TESTING)
+    course_target(course_checks tests/checks.cpp)
+    add_test(NAME algorithms COMMAND course_checks)
+    add_test(NAME practice01_small COMMAND practice01 --size 1000)
+    add_test(NAME practice02_small COMMAND practice02 --size 1000)
+    foreach(task RANGE 0 3)
+        add_test(NAME practice03_task${task} COMMAND practice03 --task ${task} --size 32 --repeats 2)
+    endforeach()
+    add_test(NAME cli_help COMMAND practice03 --help)
+    add_test(NAME cli_reject_zero COMMAND practice01 --size 0)
+    add_test(NAME cli_reject_task COMMAND practice03 --task 4)
+    add_test(NAME cli_reject_unknown COMMAND practice02 --unknown 1)
+    add_test(NAME cli_reject_overflow COMMAND practice03 --size 18446744073709551615)
+    set_tests_properties(cli_reject_zero cli_reject_task cli_reject_unknown cli_reject_overflow
+                         PROPERTIES WILL_FAIL TRUE)
+    get_property(course_tests DIRECTORY PROPERTY TESTS)
+    set_tests_properties(${course_tests} PROPERTIES
+                         ENVIRONMENT "OMP_NUM_THREADS=2;OMP_DYNAMIC=FALSE" TIMEOUT 90)
+endif()

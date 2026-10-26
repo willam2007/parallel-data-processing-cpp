@@ -1,0 +1,43 @@
+name: Build and test
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+
+jobs:
+  unix:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Linux dependencies
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y g++ cmake ninja-build
+      - name: macOS dependencies
+        if: runner.os == 'macOS'
+        run: brew install llvm libomp ninja
+      - name: Build
+        run: bash scripts/build.sh debug all
+      - name: Test
+        run: ctest --test-dir build/debug --output-on-failure
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: msys2/setup-msys2@v2.33.0
+        with:
+          msystem: UCRT64
+          update: true
+          install: >-
+            mingw-w64-ucrt-x86_64-gcc
+            mingw-w64-ucrt-x86_64-gdb
+            mingw-w64-ucrt-x86_64-cmake
+            mingw-w64-ucrt-x86_64-ninja
+      - name: Build
+        shell: msys2 {0}
+        run: bash scripts/build.sh debug all
+      - name: Test
+        shell: msys2 {0}
+        run: ctest --test-dir build/debug --output-on-failure

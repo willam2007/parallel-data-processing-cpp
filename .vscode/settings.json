@@ -1,0 +1,8 @@
+{
+  "course.toolchainBin": "C:/msys64/ucrt64/bin",
+  "terminal.integrated.env.windows": {
+    "PATH": "C:\\msys64\\ucrt64\\bin;${env:PATH}"
+  },
+  "C_Cpp.default.cppStandard": "c++20",
+  "C_Cpp_Runner.msvcBatchPath": "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Auxiliary/Build/vcvarsall.bat"
+}

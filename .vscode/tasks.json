@@ -1,0 +1,149 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "C++20: build",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/scripts/build.ps1",
+        "-Practice",
+        "1",
+        "-Configuration",
+        "Debug",
+        "-ToolchainBin",
+        "${config:course.toolchainBin}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      },
+      "detail": "CMake Debug build: practice01",
+      "linux": {
+        "command": "bash",
+        "args": [
+          "${workspaceFolder}/scripts/build.sh",
+          "debug",
+          "practice01"
+        ]
+      },
+      "osx": {
+        "command": "bash",
+        "args": [
+          "${workspaceFolder}/scripts/build.sh",
+          "debug",
+          "practice01"
+        ]
+      }
+    },
+    {
+      "label": "Practice 2: build",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/scripts/build.ps1",
+        "-Practice",
+        "2",
+        "-Configuration",
+        "Debug",
+        "-ToolchainBin",
+        "${config:course.toolchainBin}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      },
+      "detail": "CMake Debug build: practice02",
+      "linux": {
+        "command": "bash",
+        "args": [
+          "${workspaceFolder}/scripts/build.sh",
+          "debug",
+          "practice02"
+        ]
+      },
+      "osx": {
+        "command": "bash",
+        "args": [
+          "${workspaceFolder}/scripts/build.sh",
+          "debug",
+          "practice02"
+        ]
+      }
+    },
+    {
+      "label": "Practice 3: build",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/scripts/build.ps1",
+        "-Practice",
+        "3",
+        "-Configuration",
+        "Debug",
+        "-ToolchainBin",
+        "${config:course.toolchainBin}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      },
+      "detail": "CMake Debug build: practice03",
+      "linux": {
+        "command": "bash",
+        "args": [
+          "${workspaceFolder}/scripts/build.sh",
+          "debug",
+          "practice03"
+        ]
+      },
+      "osx": {
+        "command": "bash",
+        "args": [
+          "${workspaceFolder}/scripts/build.sh",
+          "debug",
+          "practice03"
+        ]
+      }
+    }
+  ]
+}

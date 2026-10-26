@@ -1,0 +1,13 @@
+*.exe
+*.o
+*.obj
+*.pdb
+*.dll
+*.zip
+/build/
+/output/
+/out/
+/.cache/
+/CMakeUserPresets.json
+/.vscode/*.local.json
+.DS_Store

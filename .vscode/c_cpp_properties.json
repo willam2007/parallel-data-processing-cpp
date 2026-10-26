@@ -1,0 +1,41 @@
+{
+  "configurations": [
+    {
+      "cppStandard": "c++20",
+      "compilerArgs": [
+        "-fopenmp"
+      ],
+      "name": "Win32",
+      "compilerPath": "C:/msys64/ucrt64/bin/g++.exe",
+      "includePath": [
+        "${workspaceFolder}/**"
+      ],
+      "compileCommands": "${workspaceFolder}/build/debug/compile_commands.json"
+    },
+    {
+      "cppStandard": "c++20",
+      "compilerArgs": [
+        "-fopenmp"
+      ],
+      "name": "Linux",
+      "compilerPath": "/usr/bin/g++",
+      "includePath": [
+        "${workspaceFolder}/**"
+      ],
+      "compileCommands": "${workspaceFolder}/build/debug/compile_commands.json"
+    },
+    {
+      "cppStandard": "c++20",
+      "compilerArgs": [
+        "-fopenmp"
+      ],
+      "name": "Mac",
+      "compilerPath": "/usr/bin/clang++",
+      "includePath": [
+        "${workspaceFolder}/**"
+      ],
+      "compileCommands": "${workspaceFolder}/build/debug/compile_commands.json"
+    }
+  ],
+  "version": 4
+}
