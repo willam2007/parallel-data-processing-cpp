@@ -37,7 +37,16 @@ jobs:
             mingw-w64-ucrt-x86_64-ninja
       - name: Build
         shell: msys2 {0}
-        run: bash scripts/build.sh debug all
+        run: powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1 -Practice all -ToolchainBin "$(cygpath -w /ucrt64/bin)"
       - name: Test
         shell: msys2 {0}
         run: ctest --test-dir build/debug --output-on-failure
+      - name: CMake diagnostics
+        if: failure()
+        shell: msys2 {0}
+        run: |
+          g++ --version
+          cmake --version
+          if test -f build/debug/CMakeFiles/CMakeConfigureLog.yaml; then
+            tail -n 250 build/debug/CMakeFiles/CMakeConfigureLog.yaml
+          fi
