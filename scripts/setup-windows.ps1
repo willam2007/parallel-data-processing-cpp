@@ -8,7 +8,7 @@ if (-not (Test-Path -LiteralPath $bash)) {
 $oldSystem = $env:MSYSTEM
 try {
     $env:MSYSTEM = 'UCRT64'
-    & $bash -lc 'pacman -S --needed --noconfirm mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-gdb mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-ninja'
+    & $bash -lc 'pacman -S --needed --noconfirm mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-libgomp mingw-w64-ucrt-x86_64-gdb mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-ninja'
     if ($LASTEXITCODE -ne 0) { throw 'Package installation failed. Update MSYS2 with pacman -Syu and retry.' }
 } finally { $env:MSYSTEM = $oldSystem }
 $codeCommand = Get-Command code -ErrorAction SilentlyContinue | Select-Object -First 1

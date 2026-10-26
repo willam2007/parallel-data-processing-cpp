@@ -27,7 +27,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run.ps1 -Practice 3 
 code .
 ```
 
-`setup-windows.ps1` устанавливает недостающие пакеты GCC, GDB, CMake и Ninja
+`setup-windows.ps1` устанавливает недостающие пакеты GCC, OpenMP/libgomp, GDB, CMake и Ninja
 в существующий MSYS2 и расширение Microsoft C/C++, если команда `code` доступна.
 `build.ps1 -Test` собирает все три программы и выполняет тесты.
 `run.ps1` сначала собирает выбранную программу, затем запускает её.
@@ -281,6 +281,8 @@ OpenMP подключается целью `OpenMP::OpenMP_CXX`, вручную 
 - **CMake выбрал MSVC:** используй scripts/build.ps1 с GCC. Старый каталог сборки
   от другого компилятора не переиспользуй; для ручной проверки выбери новый `-B`.
 - **Не найден OpenMP:** проверь компилятор GCC/LLVM и установленный runtime.
+  В MSYS2 одного пакета GCC недостаточно: установи
+  `pacman -S mingw-w64-ucrt-x86_64-libgomp` в UCRT64 или повтори setup-windows.ps1.
   На macOS переустанови `llvm libomp`; при ручной настройке можно передать
   `-DOpenMP_CXX_INCLUDE_DIR="$(brew --prefix libomp)/include"` и
   `-DOpenMP_omp_LIBRARY="$(brew --prefix libomp)/lib/libomp.dylib"`.
@@ -306,6 +308,7 @@ OpenMP подключается целью `OpenMP::OpenMP_CXX`, вручную 
 - [MSYS2: установка](https://www.msys2.org/)
 - [MSYS2: среды и архитектуры](https://www.msys2.org/docs/environments/)
 - [MSYS2: обновление](https://www.msys2.org/docs/updating/)
+- [MSYS2: отдельный пакет OpenMP/libgomp](https://packages.msys2.org/packages/mingw-w64-ucrt-x86_64-libgomp)
 - [VS Code: GCC на Windows](https://code.visualstudio.com/docs/cpp/config-mingw)
 - [CMake: FindOpenMP](https://cmake.org/cmake/help/latest/module/FindOpenMP.html)
 - [Homebrew: libomp](https://formulae.brew.sh/formula/libomp)
