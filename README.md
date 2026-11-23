@@ -11,8 +11,10 @@ UCRT64. На Linux — GCC, на macOS — Homebrew LLVM и libomp.
 | --- | --- | --- |
 | 1, 28.09.2026 | [main.cpp](main.cpp) | Порядок сложения, точность double, OpenMP reduction |
 | 2, исходники 12.10.2026 | [practice02.cpp](practice02.cpp) | Частичные суммы, ложное разделение кеша, блоки, дерево |
-| Подготовка к 3, 26.10.2026 | [practice03.cpp](practice03.cpp) | Сумма матрицы, A+B, A*x, A*B; точное задание преподавателя пока неизвестно |
-| 3.1, код с пары | [practice03_1.cpp](practice03_1.cpp) | Минимальная заготовка для записи кода преподавателя |
+| Подготовка к 3, 26.10.2026 | `practice03.cpp` (если есть в рабочей копии) | Сумма матрицы, A+B, A*x, A*B |
+| 3.1, код с пары | [practice03_1.cpp](practice03_1.cpp) | Сумма массива через std::thread и std::barrier C++20 |
+| 3.2, матрицы SIMD | [practice03_2_matrix.cpp](practice03_2_matrix.cpp) | Обычное сложение C=A+B, SSE по 4 и AVX-512 по 16 `float` |
+| 3.3, материалы последней пары | [practice03_3_matrix.cpp](practice03_3_matrix.cpp) | Прямоугольное умножение, матрица перестановки и обратная, AVX-512 |
 
 Разбор второго занятия: [materials/practice02](materials/practice02/README.md).
 Подготовка и теория матриц: [materials/practice03](materials/practice03/README.md).
@@ -24,7 +26,7 @@ UCRT64. На Linux — GCC, на macOS — Homebrew LLVM и libomp.
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/setup-windows.ps1
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1 -Test
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run.ps1 -Practice 3 -Task 2
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run.ps1 -Practice 3.3
 code .
 ```
 
@@ -104,11 +106,31 @@ CMake должен найти OpenMP; предупреждение об игно
 в `.vscode/launch.json` поменяй размер на `268435456` или используй команду ниже.
 У третьей практики F5 использует настройки в её `main()`.
 Для записи кода с пары открой `practice03_1.cpp` и выбери
-**Практика 3.1: код с пары (GDB)**. Это отдельная минимальная программа,
-в которую можно добавлять функции перед `main()` и вызовы внутри него.
+**Практика 3.1: код с пары (GDB)**. Программа складывает массив от 0 до n-1
+при `n = 1 << 28` (2 ГиБ) через потоки C++ и выводит время через `std::chrono`. Результат хранится
+в `result`; пока он не печатается.
 Запуск из PowerShell: `scripts/run.ps1 -Practice 3.1`;
 Linux/macOS: `bash scripts/build.sh debug practice03_1`, затем
 `./build/debug/practice03_1`. Для macOS также есть конфигурация LLDB.
+
+Практика 3.2: выбери **Практика 3.2: сложение матриц SIMD (GDB)**.
+Скрипт: `scripts/run.ps1 -Practice 3.2`; для замеров можно добавить
+`-Configuration Release`. Входы A/B и результаты каждого метода выделяются отдельно.
+Программа проверяет все элементы и показывает время и ускорение SSE и AVX-512.
+Это один замер, поэтому для выводов сделай несколько запусков.
+Обычный цикл в оптимизированной сборке компилятор тоже может векторизовать.
+Цель создаётся на x86. Если процессор не поддерживает AVX-512F, остаются
+обычное сложение и SSE при его поддержке. Атрибуты включают инструкции только
+в соответствующих SIMD-функциях.
+
+Практика 3.3: выбери **Практика 3.3: умножение и перестановки (GDB)**
+или конфигурацию **(macOS, LLDB)**. Из PowerShell запусти `scripts/run.ps1 -Practice 3.3`.
+На Linux/macOS собери `bash scripts/build.sh debug practice03_3` и запусти
+`./build/debug/practice03_3`. Обычное умножение работает и без AVX-512F.
+[Сравнение присланных исходников и разбор примеров](materials/practice03/README.md#материалы-последней-пары).
+
+Команды с `-Practice 3` и цель `practice03` относятся к подготовительному
+`practice03.cpp`. Если файла нет, CMake собирает остальные практики.
 Открытая вкладка не определяет запускаемую программу: её определяет конфигурация.
 
 Поставить точку останова — **F9**, выполнить строку целиком — **F10**.
@@ -239,6 +261,8 @@ OMP_NUM_THREADS=4 ./build/release/practice03 --task 2 --size 2048
 ```text
 main.cpp, practice02.cpp, practice03.cpp  # отдельные программы с main()
 practice03_1.cpp                         # минимальная заготовка для кода с пары
+practice03_2_matrix.cpp                  # обычное и SIMD-сложение матриц, x86
+practice03_3_matrix.cpp                  # умножение и матрицы перестановки
 include/course_options.h                # необязательные параметры запуска
 CMakeLists.txt                          # единая переносимая сборка
 scripts/                                # установка, сборка, запуск
@@ -251,9 +275,11 @@ build/debug/, build/release/             # генерируются, не хра
 ```
 
 Не собирай все `.cpp` через `g++ *.cpp`: у занятий разные `main()`.
-CMake создаёт отдельные цели `practice01`, `practice02`, `practice03`, `practice03_1` и
-`course_checks`. Тесты не запускают большие эксперименты: используют маленькие
-массивы, матрицы с известными ответами, дробные данные и разное число потоков.
+CMake создаёт отдельные цели `practice01`, `practice02`, `practice03_1`,
+`practice03_3` и `course_checks`. Цель `practice03` зависит от наличия
+подготовительного файла, `practice03_2` — от архитектуры x86.
+Большинство тестов используют небольшие массивы и матрицы. `practice03_1_start`
+запускает эксперимент с 2 ГиБ данных.
 GitHub Actions проверяет сборку и CTest на трёх ОС при push/PR.
 Успешный CI не означает, что отладка через UI VS Code проверена на всех этих ОС.
 

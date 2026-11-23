@@ -7,3 +7,4 @@
 *.sh text eol=lf
 *.ps1 text eol=crlf
 materials/practice02/original/*.cpp -text
+materials/practice03/original/*.cpp -text

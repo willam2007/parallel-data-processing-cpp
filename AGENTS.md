@@ -33,7 +33,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/setup-windows.ps1
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1 -Test
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run.ps1 -Practice 1 -Size 1000 -NoBuild
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run.ps1 -Practice 2 -Size 1000 -NoBuild
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run.ps1 -Practice 3 -Task 2 -Size 32 -Repeats 2 -NoBuild
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run.ps1 -Practice 3.3 -NoBuild
 ```
 
 Другой путь MSYS2: -MsysRoot у setup, CPP_TOOLCHAIN_BIN или -ToolchainBin у build/run.
@@ -52,7 +52,7 @@ bash scripts/build.sh debug all
 ctest --test-dir build/debug --output-on-failure
 OMP_NUM_THREADS=2 ./build/debug/practice01 --size 1000
 OMP_NUM_THREADS=2 ./build/debug/practice02 --size 1000
-OMP_NUM_THREADS=2 ./build/debug/practice03 --task 2 --size 32 --repeats 2
+./build/debug/practice03_3
 ```
 
 build.sh определяет Homebrew prefix на macOS. Для нативного F5 на macOS установи
@@ -61,11 +61,19 @@ vadimcn.vscode-lldb и выбери конфигурацию с суффиксо
 
 ## Что считать успешным развёртыванием
 
-- CMake нашёл OpenMP, собраны practice01, practice02, practice03, practice03_1 и course_checks.
+- CMake нашёл OpenMP, собраны practice01, practice02, practice03_1, practice03_3 и course_checks.
 - Все CTest-проверки прошли, все три маленьких запуска завершились с кодом 0.
-- Для третьей практики проверь также --task 0, 1 и 3: CTest уже делает это.
-- practice03_1.cpp — минимальная заготовка для кода с пары, пока без алгоритма
-  и параметров CLI. Сборка/запуск PowerShell поддерживают -Practice 3.1.
+- Если в рабочей копии есть подготовительный practice03.cpp, CTest проверяет также его четыре режима.
+- practice03_1.cpp — сумма массива через std::thread и std::barrier C++20;
+  main запускает эксперимент n=1<<28 (2 ГиБ), без параметров CLI, и выводит время через chrono.
+  Текущий тест practice03_1_start также выполняет этот большой запуск; учитывай память.
+  Сборка/запуск PowerShell поддерживают -Practice 3.1.
+- practice03_2_matrix.cpp сравнивает обычное сложение, SSE по 4 и AVX-512F
+  по 16 float. Поддерживается -Practice 3.2, цель создаётся только на x86.
+- practice03_3_matrix.cpp показывает прямоугольное умножение и матрицу
+  перестановки с обратной. Поддерживается -Practice 3.3, обычный вариант
+  работает на ARM и x86. Обе программы проверяют CPU перед вызовом AVX-512F.
+  Не добавляй глобальный -mavx512f: атрибут target ограничивает набор инструкций функцией.
 - На Windows проверь GDB на executable из build/debug; для полной проверки UI
   выбери практику в Run and Debug и запусти F5, если доступно управление VS Code.
   CLI/GDB-проверку не выдавай за реальное нажатие F5.
@@ -84,10 +92,9 @@ vadimcn.vscode-lldb и выбери конфигурацию с суффиксо
 - Сохраняй короткий вывод: сумма/результат, ошибка и время. Не печатай всю большую матрицу.
 - Не добивайся искусственно ненулевой ошибки. Нулевые ошибки на целых данных допустимы.
 - Проверяй все элементы матрицы; совпадения одной общей суммы недостаточно.
-- Храни main.cpp, practice02.cpp и practice03.cpp отдельно, без общего меню курса.
-  practice03_1.cpp также запускается отдельно; не заменяй им подготовленный practice03.cpp.
-  Третье занятие пока подготовительное: не выдавай догадки за задание преподавателя.
-- Оригиналы одногруппника в materials/practice02/original/ не редактируй.
+- Храни программы практик отдельно, без общего меню курса. Если в рабочей копии
+  есть подготовительный practice03.cpp, он собирается отдельной целью.
+- Оригиналы одногруппников в materials/practice02/original/ и materials/practice03/original/ не редактируй.
   .exe и ZIP из исходного архива не запускай и не публикуй; собирай проверенные исходники.
 - Запускай CTest после изменений алгоритмов, CLI или сборки. В tests/checks.cpp
   исходники подключены с переименованием main, чтобы проверить те же функции

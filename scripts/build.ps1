@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-    [ValidateSet('1','2','3','3.1','all','tests')][string]$Practice = 'all',
+    [ValidateSet('1','2','3','3.1','3.2','3.3','all','tests')][string]$Practice = 'all',
     [ValidateSet('Debug','Release')][string]$Configuration = 'Debug',
     [string]$ToolchainBin,
     [switch]$Test

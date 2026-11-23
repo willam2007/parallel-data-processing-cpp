@@ -4,9 +4,12 @@
 #define main practice02_entry
 #include "../practice02.cpp"
 #undef main
+#ifdef COURSE_HAS_PRACTICE03
 #define main practice03_entry
 #include "../practice03.cpp"
 #undef main
+#endif
+#include <cmath>
 #include <vector>
 #include <cstdlib>
 
@@ -25,12 +28,12 @@ void check(const char* name, const double* actual, const double* expected, size_
     ++checks;
 }
 
-using Kernel = void (*)(const double*, const double*, double*, size_t);
-
 int main()
 {
     omp_set_dynamic(0);
     const int thread_counts[] = {1, 2, 3, 5, 8, 11};
+#ifdef COURSE_HAS_PRACTICE03
+    using Kernel = void (*)(const double*, const double*, double*, size_t);
     const size_t lengths[] = {0, 1, 2, 3, 5, 7, 17};
     const Kernel additions[] = {matrix_add, matrix_add_parallel};
     const Kernel vectors[] = {matrix_vector, matrix_vector_parallel, matrix_vector_columns};
@@ -44,10 +47,12 @@ int main()
     const double handVector[] = {50, 110};
     const double handProduct[] = {19, 22, 43, 50};
     const double handSum = 10;
+#endif
 
     for (int threads : thread_counts)
     {
         omp_set_num_threads(threads);
+#ifdef COURSE_HAS_PRACTICE03
         double output[4];
         double s = matrix_sum(handA, 2);
         check("hand sum", &s, &handSum, 1);
@@ -68,6 +73,7 @@ int main()
             fn(handA, handB, output, 2);
             check("hand product", output, handProduct, 4);
         }
+#endif
 
         const size_t array_lengths[] = {0, 1, 3, 7, 17, 1000};
         double (*sum_methods[])(const double*, size_t) = {
@@ -91,6 +97,7 @@ int main()
                 }
             }
         }
+#ifdef COURSE_HAS_PRACTICE03
         for (size_t n : lengths)
         {
             std::vector<double> A(n * n), B(n * n), x(n);
@@ -138,12 +145,15 @@ int main()
                 }
             }
         }
+#endif
     }
+#ifdef COURSE_HAS_PRACTICE03
     const double ref[] = {1, 2, 3};
     const double changed[] = {1, -2, 4};
     double error = max_error(ref, changed, 3);
     const double expected_error = 4;
     check("max_error", &error, &expected_error, 1);
-    std::printf("PASS: %d checks; hand-computed cases, array/matrix algorithms; empty inputs, fractions, repeats, 1/2/3/5/8/11 threads.\n", checks);
+#endif
+    std::printf("PASS: %d checks; empty inputs, fractions, repeats, 1/2/3/5/8/11 threads.\n", checks);
 }
 
